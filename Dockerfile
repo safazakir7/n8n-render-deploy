@@ -1,5 +1,5 @@
 # n8n's official image has no package manager (hardened base) — so we fetch
-# a static ffmpeg binary and a Devanagari font file directly instead of
+# a static ffmpeg binary and Devanagari/Latin fonts directly instead of
 # apk/apt-get, and drop them straight into the image.
 FROM n8nio/n8n:latest
 
@@ -22,5 +22,6 @@ USER node
 ENV N8N_PROTOCOL=https
 ENV N8N_SECURE_COOKIE=false
 
-# Render sets $PORT at runtime; n8n needs N8N_PORT to match it.
-CMD ["/bin/sh", "-c", "export N8N_PORT=${PORT:-5678} && n8n start"]
+# No custom CMD/ENTRYPOINT override — use the base image's own entrypoint,
+# which knows how to start n8n correctly on this hardened base.
+# Port is fixed via PORT + N8N_PORT env vars set on the Render service itself.
