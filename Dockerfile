@@ -3,7 +3,9 @@
 FROM n8nio/n8n:latest
 
 USER root
-RUN apk add --no-cache ffmpeg font-noto font-noto-devanagari
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg fonts-noto-core && \
+    rm -rf /var/lib/apt/lists/*
 USER node
 
 ENV N8N_PROTOCOL=https
